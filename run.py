@@ -25,8 +25,12 @@ retry = 0
 while True:
     # 获取验证码
     gen_captcha_img_url = "https://portableappk.com/wp-content/plugins/wordpress-hack-bundle/addons/gen-captcha-img.php"
-    r1 = session.get(gen_captcha_img_url, headers=headers)
-    code = ocr.classification(r1.content)
+    try:
+        r1 = session.get(gen_captcha_img_url, headers=headers)
+        code = ocr.classification(r1.content)
+    except:
+        retry += 1
+        continue
     # 登录
     login_data = {
         "log": PORTABLEAPPK_USER, 
@@ -52,8 +56,12 @@ while True:
 retry = 0
 while True:
     # 获取验证码
-    r3 = session.get(gen_captcha_img_url, headers=headers)
-    code = ocr.classification(r3.content)
+    try:
+        r3 = session.get(gen_captcha_img_url, headers=headers)
+        code = ocr.classification(r3.content)
+    except:
+        retry += 1
+        continue
     # 签到
     verify_checkin_url = "https://portableappk.com/wp-content/plugins/wordpress-hack-bundle/addons/verify-checkin.php"
     r4 = session.post(verify_checkin_url,headers=headers, data={"phrase": code})
